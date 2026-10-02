@@ -6,60 +6,6 @@ An institutional-grade, multi-agent financial research system built on a headles
 
 ## Architecture Overview
 
-```
-+-----------------------------------------------------------+
-|                     User Prompt / Goal                    |
-+-----------------------------+-----------------------------+
-                              |
-                              v
-+-----------------------------------------------------------+
-|               Company-to-Ticker Resolver                  |
-|    (SEC Ticker Map -> Yahoo Finance Search -> LLM Fallback) |
-+-----------------------------+-----------------------------+
-                              |
-                              v
-+-----------------------------------------------------------+
-|                    Planner Agent                          |
-|         (Episodic Memory Injection via SQLite)            |
-+-----------------------------+-----------------------------+
-                              |
-               +--------------+--------------+
-               |                             |
-               v                             v
-+-----------------------------+ +---------------------------+
-|     Quant Analyst Agent     | |    Qual Analyst Agent     |
-|   (Yahoo Finance Multiples) | | (ChromaDB + SEC 10-K RAG) |
-+--------------+--------------+ +-------------+-------------+
-               |                             |
-               +--------------+--------------+
-                              |
-                              v
-+-----------------------------------------------------------+
-|                     Synthesis Engine                      |
-+-----------------------------+-----------------------------+
-                              |
-                              v
-+-----------------------------------------------------------+
-|                  Critic Guardrail Agent                   | <----+
-+-----------------------------+-----------------------------+      | Revision Loop
-                              |                                    | (Max iterations)
-                       [ Approved ] -------------------------------+
-                              |
-                              v
-+-----------------------------------------------------------+
-|                 Memory Gate (Evaluator)                   |
-|          (Extracts Persistent Preferences to SQLite)      |
-+-----------------------------+-----------------------------+
-                              |
-                              v
-+-----------------------------------------------------------+
-|                    Delivery Artifact                      |
-|         (Terminal CLI Markdown / Streamlit Cockpit)       |
-+-----------------------------------------------------------+
-```
-
-### Visual Workflow Diagram
-
 ```mermaid
 flowchart TD
     User([User Prompt / Goal]) --> Resolver[Company / Ticker Resolver]
